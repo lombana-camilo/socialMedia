@@ -1,0 +1,23 @@
+{
+  "name": "reddit",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "NODE_ENV=development ts-node-dev --respawn ./src/index.ts"
+  },
+  "keywords": [],
+  "author": "Camilo Lombana",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/config": "^3.3.0",
+    "@types/express": "^4.17.14",
+    "@types/node": "^18.7.23",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^4.8.4"
+  },
+  "dependencies": {
+    "config": "^3.3.8",
+    "express": "^4.18.1"
+  }
+}

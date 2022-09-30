@@ -17,7 +17,19 @@
     "typescript": "^4.8.4"
   },
   "dependencies": {
+    "@mikro-orm/cli": "^5.4.2",
+    "@mikro-orm/core": "^5.4.2",
+    "@mikro-orm/migrations": "^5.4.2",
+    "@mikro-orm/postgresql": "^5.4.2",
     "config": "^3.3.8",
+    "dotenv": "^16.0.3",
     "express": "^4.18.1"
+  },
+  "mikro-orm": {
+    "useTsNode": true,
+    "configPaths": [
+      "./src/mikro-orm.config.ts",
+      "./build/mikro-orm.config.js"
+    ]
   }
 }

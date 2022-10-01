@@ -4,6 +4,13 @@ import { MikroORM } from "@mikro-orm/core";
 import { EntityManager } from "@mikro-orm/postgresql";
 import { Post } from "./entities/Post";
 import mikroConfig from "./mikro-orm.config";
+import { buildSchema } from "type-graphql";
+import { ApolloServer } from "apollo-server-express";
+import { CheckResolver } from "./resolvers/check.resolver";
+import {
+  ApolloServerPluginLandingPageProductionDefault,
+  ApolloServerPluginLandingPageGraphQLPlayground,
+} from "apollo-server-core";
 
 const port = config.get<string>("port");
 
@@ -15,8 +22,27 @@ async function main() {
     // Run Migrations
     await orm.getMigrator().up();
 
-    const firstPost = em.create(Post, { title: "My first post" });
-    await em.persistAndFlush(firstPost);
+    // Seed
+    /* const firstPost = em.create(Post, { title: "My first post" }); */
+    /* await em.persistAndFlush(firstPost); */
+
+    // Schema
+    const schema = await buildSchema({
+      resolvers: [CheckResolver],
+      /* authChecker */
+    });
+
+    // Apollo Server
+    const apolloServer = new ApolloServer({
+      schema,
+      plugins: [
+        process.env.NODE_ENV === "production"
+          ? ApolloServerPluginLandingPageProductionDefault()
+          : ApolloServerPluginLandingPageGraphQLPlayground(),
+      ],
+    });
+    await apolloServer.start();
+    apolloServer.applyMiddleware({ app: server });
 
     server.listen(port, () => {
       console.log(`listening on port ${port}`);

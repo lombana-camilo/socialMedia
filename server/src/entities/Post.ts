@@ -5,10 +5,10 @@ export class Post {
   @PrimaryKey()
   id!: number;
 
-  @Property({type:"date", default:"NOW()"})
+  @Property({type:"date" })
   createdAt? = new Date();
 
-  @Property({ type: "date ", onUpdate: () => new Date(), default:"NOW()" })
+  @Property({ type: "date ", onUpdate: () => new Date() })
   updatedAt? = new Date();
 
   @Property({ type: "text" })

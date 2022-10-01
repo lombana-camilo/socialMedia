@@ -1,3 +1,4 @@
+import "reflect-metadata"
 import server from "./server";
 import config from "config";
 import { MikroORM } from "@mikro-orm/core";
@@ -6,11 +7,12 @@ import { Post } from "./entities/Post";
 import mikroConfig from "./mikro-orm.config";
 import { buildSchema } from "type-graphql";
 import { ApolloServer } from "apollo-server-express";
-import { CheckResolver } from "./resolvers/check.resolver";
 import {
   ApolloServerPluginLandingPageProductionDefault,
   ApolloServerPluginLandingPageGraphQLPlayground,
 } from "apollo-server-core";
+import { PostResolver } from "./resolvers/post.resolver";
+import { Context } from "./types/context";
 
 const port = config.get<string>("port");
 
@@ -28,13 +30,17 @@ async function main() {
 
     // Schema
     const schema = await buildSchema({
-      resolvers: [CheckResolver],
+      resolvers: [PostResolver],
       /* authChecker */
     });
 
     // Apollo Server
     const apolloServer = new ApolloServer({
       schema,
+      context: (ctx: Context) => {
+        ctx.em = em;
+        return ctx;
+      },
       plugins: [
         process.env.NODE_ENV === "production"
           ? ApolloServerPluginLandingPageProductionDefault()

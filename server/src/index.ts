@@ -3,7 +3,6 @@ import server from "./server";
 import config from "config";
 import { MikroORM } from "@mikro-orm/core";
 import { EntityManager } from "@mikro-orm/postgresql";
-import { Post } from "./entities/Post";
 import mikroConfig from "./mikro-orm.config";
 import { buildSchema } from "type-graphql";
 import { ApolloServer } from "apollo-server-express";
@@ -13,6 +12,7 @@ import {
 } from "apollo-server-core";
 import { PostResolver } from "./resolvers/post.resolver";
 import { Context } from "./types/context";
+import { UserResolver } from "./resolvers/user.resolver";
 
 const port = config.get<string>("port");
 
@@ -30,7 +30,7 @@ async function main() {
 
     // Schema
     const schema = await buildSchema({
-      resolvers: [PostResolver],
+      resolvers: [PostResolver, UserResolver],
       /* authChecker */
     });
 
